@@ -32,7 +32,7 @@ function listForm() {
     function handleSubmit(event) {
         event.preventDefault();
         if (task.trim() !== "") {
-            if (!taskList.includes(task)) {
+            if (!taskList.some(t => t.text === task)) {
                 setTaskList(prevTaskList => [...prevTaskList, { text: task, date: date || null, priority: priority, done: false }]);
                 setTask("");
                 setDate("");
@@ -59,24 +59,6 @@ function listForm() {
         setTaskList(prevTaskList => prevTaskList.filter((_, i) => i !== index))
     }
 
-    function moveTaskUp(index) {
-        if (index === 0) return;
-        setTaskList(prevTaskList => {
-            const updatedTasks = [...prevTaskList];
-            [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]]; // Swap tasks
-            return updatedTasks;
-        });
-    }
-
-    function moveTaskDown(index) {
-        setTaskList(prevTaskList => {
-            if (index >= prevTaskList.length - 1) return prevTaskList;
-            const updatedTasks = [...prevTaskList];
-            [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]]; // Swap tasks
-            return updatedTasks;
-        });
-    }
-
     function editTask(index, newText, newDate, newPriority) {
         setTaskList(prevTaskList =>
             prevTaskList.map((task, i) =>
@@ -84,11 +66,6 @@ function listForm() {
             )
         );
     }
-
-    const sortedTasks = [...taskList].sort((a, b) => {
-        const priorityOrder = { High: 3, Medium: 2, Low: 1 };
-        return priorityOrder[b.priority] - priorityOrder[a.priority];
-    });
 
     return (
         <>
@@ -124,7 +101,7 @@ function listForm() {
             </div>
 
 
-            {taskList.length ? <TasksLists editTask={editTask} moveTaskDown={moveTaskDown} tasks={sortedTasks} removeTask={removeTask} markTaskDone={markTaskDone} moveTaskUp={moveTaskUp} /> : <></>}
+            {taskList.length ? <TasksLists editTask={editTask} tasks={taskList} removeTask={removeTask} markTaskDone={markTaskDone} /> : <></>}
         </>
     )
 }

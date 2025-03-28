@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function TasksList({ tasks, removeTask, markTaskDone, moveTaskUp, moveTaskDown, editTask }) {
+function TasksList({ tasks, removeTask, markTaskDone, editTask }) {
 
     const [editIndex, setEditIndex] = useState(null);
     const [editText, setEditText] = useState("");
@@ -18,17 +18,12 @@ function TasksList({ tasks, removeTask, markTaskDone, moveTaskUp, moveTaskDown, 
         setEditIndex(null);
     }
 
-    const sortedTasks = [...tasks].sort((a, b) => {
-        const priorityOrder = { High: 0, Medium: 1, Low: 2 };
-        return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
-
     return (
         <>
             <div className="mt-5">
                 <h2 className="text-white">Task List</h2>
                 <ul className="list-group">
-                    {sortedTasks.map((task, index) => (
+                    {tasks.map((task, index) => (
                         <li key={index} className={`list-group-item d-flex my-2 justify-content-between align-items-center ${task.done ? 'bg-warning' : 'bg-success'}`}>
                             {editIndex === index ? (
                                 <>
@@ -77,8 +72,6 @@ function TasksList({ tasks, removeTask, markTaskDone, moveTaskUp, moveTaskDown, 
                                         🖋️
                                     </button>
                                 )}
-                                <button className="btn btn-primary btn-sm" onClick={() => moveTaskUp(index)}>👆🏻</button>
-                                <button className="btn btn-primary btn-sm" onClick={() => moveTaskDown(index)}>👇🏻</button>
                                 <button className="btn btn-danger btn-sm" onClick={() => removeTask(index)}>🗑️</button>
                             </div>
                         </li>
