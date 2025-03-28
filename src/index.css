@@ -1,0 +1,17 @@
+body{
+  background-color: rgba(0, 0, 0, 0.780);
+}
+
+.userInput{
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+.userInput::placeholder {
+  color: white;
+  opacity: 1;
+}
